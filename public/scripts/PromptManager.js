@@ -520,12 +520,12 @@ PromptManagerModule.prototype.checkForMissingPrompts = function(prompts) {
 };
 
 /**
- * Check whether a prompt is a marker.
+ * Check whether a prompt can be inspected.
  * @param {object} prompt - The prompt to check.
  * @returns {boolean} True if the prompt is a marker, false otherwise.
  */
-PromptManagerModule.prototype.isStPromptMarker = function (prompt) {
-    return true === prompt.marker;
+PromptManagerModule.prototype.isPromptInspectionAllowed = function (prompt) {
+    return  true === prompt.marker;
 }
 
 /**
@@ -775,7 +775,7 @@ PromptManagerModule.prototype.loadMessagesIntoInspectForm = function (messages) 
 
     messages.getCollection().forEach(message => {
         const truncatedTitle = message.content.length > 32 ? message.content.slice(0, 32) + '...' : message.content;
-        messageList.append(createInlineDrawer(message.title || truncatedTitle, message.content || 'No Content'));
+        messageList.append(createInlineDrawer(message.identifier || truncatedTitle, message.content || 'No Content'));
     });
 }
 
@@ -981,7 +981,7 @@ PromptManagerModule.prototype.renderPromptManagerListItems = function () {
         }
 
         let inspectSpanHtml = '';
-        if (this.isStPromptMarker(prompt)) {
+        if (this.isPromptInspectionAllowed(prompt)) {
             inspectSpanHtml = `
                 <span title="inspect" class="prompt-manager-inspect-action fa-solid fa-magnifying-glass"></span>
             `;
